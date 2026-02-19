@@ -1,4 +1,11 @@
 #include <iostream>
+using namespace std;
+
+struct x {
+    int data;
+    x* back;   
+    x* next;    
+};
 
 // Lab 08
 // TODO: реализуйте решение по заданию в labs/lab08_pointers_arrays/README.md
@@ -8,16 +15,53 @@
 // - числа через пробел
 // - если несколько строк — в фиксированном порядке
 int main() {
-    // Упражнение 1: объяснить использование типов/переменных в коде (без ввода).
+    //+ Упражнение 1: объяснить использование типов/переменных в коде (без ввода).
     // TODO: при необходимости вывести пояснения/результаты.
 
-    // Упражнение 2: найти ошибки в коде (без ввода).
+    //+ Упражнение 2: найти ошибки в коде (без ввода).
     // TODO: при необходимости вывести пояснения/результаты.
 
     // Упражнение 3: заполнить массивы (10 элементов) разными способами.
     // TODO: реализуйте 4 варианта заполнения и выведите 10 значений для каждого.
 
+
+
     // Упражнение 4: линейный самоадресуемый список из 10 элементов.
     // TODO: сформируйте список и выведите элементы по порядку.
+
+    x* head = nullptr; x* tail = nullptr;
+
+    for (int i = 0; i < 10; ++i) {
+        x* xi = new x();
+        xi->data = i;
+        xi->next = nullptr;
+        xi->back = nullptr;
+
+        if (head == nullptr) {
+            head = xi;
+            tail = xi;
+        }
+        else {
+            tail->next = xi;
+            xi->back = tail;
+            tail =xi;
+        }
+    }
+
+    x* current = head;
+    cout << "Элементы двусвязного списка: ";
+    while (current != nullptr) {
+        cout << current->data << " ";
+        current = current->next;
+    }
+    cout <<endl;
+
+    current = head;
+    while (current != nullptr) {
+        x* next = current->next;
+        delete current;
+        current = next;
+    }
+
     return 0;
 }
