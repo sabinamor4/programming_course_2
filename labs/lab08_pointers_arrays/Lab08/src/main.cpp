@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 
 struct x {
@@ -24,6 +25,8 @@ int main() {
     // Упражнение 3: заполнить массивы (10 элементов) разными способами.
     // TODO: реализуйте 4 варианта заполнения и выведите 10 значений для каждого.
 
+
+    //1)
     const int N = 10;
 
     //1. Статический массив, индексная адресация
@@ -78,6 +81,49 @@ int main() {
     cout << "\n";
     delete [] dArr2;
     //освобождение памяти
+
+    //2)
+    int n1 = 5, n2 = 7;
+    int *arr1// = new int[n1] {1, 3, 5, 8, 10};
+    int *arr2// = new int[n2] {2, 4, 6, 7, 9, 11, 12};
+    int *result = new int[n1 + n2];
+
+    // Инициализация генератора случайных чисел
+    srand(static_cast<unsigned int>(time(0)));
+
+    for (int i = 0; i < n1; i++) {
+        // Случайное число от 1 до 100
+        arr1[i] = 1 + rand() % 100;
+    }
+    for (int i = 0; i < n2; i++) {
+        arr2[i] = 1 + rand() % 100;
+    }
+
+    int i = 0, j = 0, k = 0;
+
+    while (i < n1 && j < n2) {
+        if (*(arr1 + i) < *(arr2 + j)) {
+            result[k++] = arr1[i++];
+        }
+        else {
+            result[k++] = arr2[j++];
+        }
+    }
+
+    while (i < n1) result[k++] = *(arr1 + i++);
+    while (j < n2) result[k++] = *(arr2 + j++);
+
+    cout << "Объединенный массив: ";
+    for (int i = 0; i < n1 + n2; i++) {
+        cout << result[i] << " ";
+    }
+    cout <<endl;
+
+    delete [] arr1;
+    delete [] arr2;
+    delete [] result;
+
+
 
 
     // Упражнение 4: линейный самоадресуемый список из 10 элементов.
