@@ -2,11 +2,6 @@
 #include <cstdlib>
 using namespace std;
 
-struct x {
-    int data;
-    x* back;   
-    x* next;    
-};
 
 // Lab 08
 // TODO: реализуйте решение по заданию в labs/lab08_pointers_arrays/README.md
@@ -56,7 +51,7 @@ int main() {
     int *dArr1;
     //объявление динамического массива=
     //объявление указателя массива на тип элементов массива
-    dArr = new int[N];
+    dArr1 = new int[N];
     //определение- выделение памяти 
     for (int i = 0; i < N; i++) {
         dArr1[i] = i * i;
@@ -71,7 +66,7 @@ int main() {
     //4.динамический массив, адресация  с помощью указателя (косвенная адресация).
     int *dArr2 = new int[N];
     int* p = dArr2;
-    for (int i = 0; i < N; ++i, p++) {
+    for (int i = 0; i < N; ++i, p++) {//указатель меняется на 4 байта
         *p = i * i;
     }
     p = dArr2; // Сброс указателя на начало
@@ -84,12 +79,11 @@ int main() {
 
     //2)
     int n1 = 5, n2 = 7;
-    int *arr1// = new int[n1] {1, 3, 5, 8, 10};
-    int *arr2// = new int[n2] {2, 4, 6, 7, 9, 11, 12};
+    int* arr1 = new int[n1];// { 1, 3, 5, 8, 10 };
+    int* arr2= new int[n2];// {2, 4, 6, 7, 9, 11, 12};
     int *result = new int[n1 + n2];
 
-    // Инициализация генератора случайных чисел
-    srand(static_cast<unsigned int>(time(0)));
+    srand((time(0));
 
     for (int i = 0; i < n1; i++) {
         // Случайное число от 1 до 100
@@ -130,6 +124,9 @@ int main() {
 
     // Упражнение 4: линейный самоадресуемый список из 10 элементов.
     // TODO: сформируйте список и выведите элементы по порядку.
+
+    struct x {int data; x* back; x* next;
+    };
 
     x* head = nullptr; x* tail = nullptr;
 
