@@ -16,20 +16,35 @@ int main() {
 
     // Упражнение 4: ввод количества слов и самих слов.
     //int word_count = 0;
-    //if (!(std::cin >> word_count)) {
-    //    return 0;
-    //}
+    //if (!(cin >> word_count)) return 0;
 
-    //std::vector<std::string> words;
+    //vector<string> words;
     //words.reserve(word_count);
     //for (int i = 0; i < word_count; ++i) {
-    //    std::string word;
-    //    std::cin >> word;
+    //    string word;
+    //    cin >> word;
     //    words.push_back(word);
     //}
 
-    //// TODO: выведите слова с четными номерами (2, 4, 6, ...), по одному в строке.
-    //return 0;
 
-    cout << "Char represented by \\101: " << '\101' << endl;
+    int n;
+    cout << "Введите количество слов (max 20): ";
+    cin >> n;
+    if (n > 20) n = 20;
+
+    char words[20][11];
+
+    cout << "Введите слова:" << endl;
+    for (int i = 0; i < n; ++i) cin >> words[i];
+
+    cout << "Слова с четными номерами (2, 4, ...):" << endl;
+    for (int i = 1; i < n; i += 2) cout << words[i] << endl;
+
+
+    // TODO: выведите слова с четными номерами (2, 4, 6, ...), по одному в строке.
+
+
+    return 0;
+
+    //cout << "Char represented by \\101: " << '\101' << endl;
 }
