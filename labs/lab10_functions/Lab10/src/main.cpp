@@ -1,6 +1,3 @@
-//#include <iostream>
-////#include <stdlib.h>
-//using namespace std;
 
 //// Lab 10
 // II.2. УПРАЖНЕНИЕ 2 («Гармошка»). Задан упорядоченный целочисленный массив 
@@ -20,70 +17,13 @@
 //// - числа через пробел
 //// - если несколько строк — в фиксированном порядке
 
-
-
-////int pack(int *A, int n)
-////{
-////    int m = 1, *C;
-////    C = new int[n];
-////    C[1] = A[1];
-////    for (int i = 2; i < n; i++, m++)
-////    {
-////        if (C[m] < A[i])  C[m] = A[i];
-////    }
-////    for (int i = 0; i < n; i++) printf("%d ", C[i]);
-////    printf("\n");
-////    //C[1] = 6;
-////    //return C[1];
-////}
-
-int unpack()
-{
-
-}
-
-//int main() 
-//{
-//    int n, * A, i;
-//    cout << "input N>>1000 = ";
-//    cin >> n;
-//    A = new int[n]; 
-//
-//    //fill the array values with rand()
-//    for (int i = 0; i < n; i++)
-//    {
-//        int k = rand() % 18;
-//        if (i == 0) A[i] = k;
-//        for (int i = 0; i < n && A[i] < k; i++);
-//        for (int j = n; j > i; j--)
-//        {
-//            A[j] = A[j - 1];
-//        }
-//        A[i] = k;
-//    }
-//
-//    //to cheak array values
-//    for (i = 0; i < n; i++) printf("%d ", A[i]);
-//    printf("\n");
-//
-//    //pack(A,n);
-//    
-//
-//    
-//    //cout << "arr = ";
-//    //for (i = 0; i < n; i++) printf("%d ", [i]);
-//    //cout << "pack = ";
-//    //for (i = 0; i < n; i++) printf("%d ", [i]);
-//    //unpack();
-//}
-
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
 using namespace std;
 //#define rang 18;
 
-void pack(const int* a, int n, int* count) {
+void pack(int* a, int n, int* count) {
     // заполнение массива нулями, чтобы не использовались мусорные значения
     // вывод для проверки коректности подсчета в массиве счетчике
     cout << "заполнение массива счетчика нулями для дальнейшего подсчета:\n";
@@ -102,17 +42,34 @@ void pack(const int* a, int n, int* count) {
     }
 
     // вывод для проверки коректности подсчета в массиве счетчике
-    for (int i = 0; i < 18; i++)
-    {
+    for (int i = 0; i < 18; i++) {
         cout << count[i] << " ";
+    }
+    cout << endl << endl;
+
+    //освобождение памяти массива а[]
+    delete[] a;
+
+    // выводим элементов массива А для проверки
+    cout << "массив А после «упаковки»:\n";
+    for (int i = 0; i < n; i++){
+        cout << a[i] << " ";
     }
     cout << endl << endl;
 }
 
-
-//int unpack(){
-//
-//}
+void unpack(int* a, const int* key, const int* count, int n) {
+    int num = 0;
+    for (int i = 0; i < 18; i++) {
+        if (count[i] > 0) {
+            for (int j = 0; j < count[i]; j++,num++) {
+                if (num < n) { // Проверяем, чтобы не выйти за границы массива
+                    a[num] = key[i];
+                }
+            }
+        }
+    }
+}
 
 int main() {
     system("chcp 65001 > nul");
@@ -122,8 +79,7 @@ int main() {
     // key - массив для сжатия с уникальными значениями
     cout << "Уникальные числа :\n";
     int* key = new int[18]; 
-    for (int i = 0; i < 18; i++)
-    {
+    for (int i = 0; i < 18; i++) {
         key[i] = i;
         cout << key[i] << " ";
     }
@@ -140,17 +96,14 @@ int main() {
     srand(time(0)); 
     // позволяет каждый раз без исключений получать новое значения
 
-    for (int i = 0; i < n; i++) 
-    {
+    for (int i = 0; i < n; i++) {
         int k = 0 + rand() % 18, x = 0;
                
-        while (x < size && a[x] < k) 
-        {
+        while (x < size && a[x] < k) {
             x++;
         }
 
-        for (int j = size; j > x; j--) 
-        {
+        for (int j = size; j > x; j--) {
             a[j] = a[j - 1];
         }
 
@@ -161,8 +114,7 @@ int main() {
 
     // выводим элементов для проверки
     cout << "первые n элементов отсортированного массива:\n";
-    for (int i = 0; i < n; i++) 
-    {
+    for (int i = 0; i < n; i++) {
         cout << a[i] << " ";
     }
     cout << endl << endl;
@@ -180,7 +132,15 @@ int main() {
     cout << endl;
 
     //unpack
-    //unpack(int* A, int N, int* key, int* count)
+    unpack(a, key, count, n);
+
+    // выводим элементов массива А для проверки
+    cout << "массив А после «упаковки» и «распаковки»:\n";
+    for (int i = 0; i < n; i++) {
+        cout << a[i] << " ";
+    }
+    cout << endl << endl;
+
 
     delete[] a;
     return 0;
