@@ -108,10 +108,12 @@
 #include <cstdlib>
 #include <ctime>
 using namespace std;
-//#define rang  18;
+//#define rang 18;
 
-int pack(int* a, int n,int* count) {
-    int* count = new int[18];
+void pack(const int* a, int n, int* count) {
+    count = new int[18];
+    // заполнение массива нулями, чтобы не использовались мусорные значения
+    // вывод для проверки коректности подсчета в массиве счетчике
     for (int i = 0; i < 18; i++)
     {
         count[i] = 0;
@@ -120,8 +122,18 @@ int pack(int* a, int n,int* count) {
     cout << endl;
 
 
-    // Подсчитываем количество повторений каждого числа
-    for (int i = 0; i < n; i++) count[a[i]]++;
+    // подсчитываем количество повторений каждого числа в массиве счетчике
+    for (int i = 0; i < n; i++) 
+    {
+        count[a[i]]++;
+    }
+
+    // вывод для проверки коректности подсчета в массиве счетчике
+    for (int i = 0; i < 18; i++)
+    {
+        cout << count[i] << " ";
+    }
+    cout << endl;
 
 
     //return count;
@@ -135,6 +147,7 @@ int main()
     int count[18];
 
     // key - массив для сжатия с уникальными значениями
+    cout << "Уникальные числа :\n";
     int* key = new int[18]; 
     for (int i = 0; i < 18; i++)
     {
@@ -142,7 +155,6 @@ int main()
         cout << key[i] << " ";
     }
     cout << endl;
-    cout << 2356;
 
     // создание упорядоченного массива с элементами в диапазоне 0-17
     int n;
@@ -182,14 +194,21 @@ int main()
     }
     cout << endl;
 
+    //pack()
     pack(a, n, count);
+
+    cout << endl;
+
     for (int i = 0; i < 18; i++)
     {
         if (count[i] > 0)
-        cout << key[i] << ": " << count[i] << "\n";
+        {
+            cout << key[i] << ": " << count[i] << "\n";
+        }
     }
     cout << endl;
 
+    //unpack
     //unpack(int* A, int N, int* key, int* count)
 
     delete[] a;
