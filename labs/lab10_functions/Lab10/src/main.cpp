@@ -21,33 +21,6 @@
 //// - если несколько строк — в фиксированном порядке
 
 
-////void sort(int b, int e, int* A, int* B)
-////{
-////    if (b < e)
-////    {
-////        int c = (b + e) / 2;
-////        sort(b, c, A, B); sort(c + 1, e, A, B);
-////        int i1 = b, i2 = c + 1, j = b;
-////        while (i1 <= c && i2 <= e)
-////            if (A[i1] <= A[i2]) 
-////            {   
-////                B[j] = A[i1]; i1++; j++; 
-////            }
-////            else 
-////            { 
-////                B[j] = A[i2]; i2++; j++; 
-////            }
-////        while (i1 <= c)
-////        {   
-////            B[j] = A[i1]; i1++; j++; 
-////        }
-////        while (i2 <= e) 
-////        { 
-////            B[j] = A[i2]; i2++; j++; 
-////        }
-////        for (j = b; j <= e; j++) A[j] = B[j];
-////    }
-////}
 
 ////int pack(int *A, int n)
 ////{
@@ -64,10 +37,10 @@
 ////    //return C[1];
 ////}
 
-////int unpack()
-////{
-////
-////}
+int unpack()
+{
+
+}
 
 //int main() 
 //{
@@ -111,18 +84,18 @@ using namespace std;
 //#define rang 18;
 
 void pack(const int* a, int n, int* count) {
-    count = new int[18];
     // заполнение массива нулями, чтобы не использовались мусорные значения
     // вывод для проверки коректности подсчета в массиве счетчике
-    for (int i = 0; i < 18; i++)
-    {
+    cout << "заполнение массива счетчика нулями для дальнейшего подсчета:\n";
+    for (int i = 0; i < 18; i++){
         count[i] = 0;
         cout << count[i] << " ";
     }
-    cout << endl;
+    cout << endl << endl;
 
 
     // подсчитываем количество повторений каждого числа в массиве счетчике
+    cout << "подсчитываем количество повторений каждого числа в массиве счетчике:\n";
     for (int i = 0; i < n; i++) 
     {
         count[a[i]]++;
@@ -133,15 +106,15 @@ void pack(const int* a, int n, int* count) {
     {
         cout << count[i] << " ";
     }
-    cout << endl;
-
-
-    //return count;
-    
+    cout << endl << endl;
 }
 
-int main() 
-{
+
+//int unpack(){
+//
+//}
+
+int main() {
     system("chcp 65001 > nul");
 
     int count[18];
@@ -154,7 +127,7 @@ int main()
         key[i] = i;
         cout << key[i] << " ";
     }
-    cout << endl;
+    cout << endl << endl;
 
     // создание упорядоченного массива с элементами в диапазоне 0-17
     int n;
@@ -164,7 +137,7 @@ int main()
     int* a = new int[n];
     int size = 0; // текущий размер заполненной части массива
 
-    //srand(time(0)); 
+    srand(time(0)); 
     // позволяет каждый раз без исключений получать новое значения
 
     for (int i = 0; i < n; i++) 
@@ -192,17 +165,15 @@ int main()
     {
         cout << a[i] << " ";
     }
-    cout << endl;
+    cout << endl << endl;
 
     //pack()
     pack(a, n, count);
 
     cout << endl;
 
-    for (int i = 0; i < 18; i++)
-    {
-        if (count[i] > 0)
-        {
+    for (int i = 0; i < 18; i++){
+        if (count[i] > 0) {
             cout << key[i] << ": " << count[i] << "\n";
         }
     }
