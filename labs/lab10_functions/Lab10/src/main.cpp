@@ -14,7 +14,6 @@
 #include <cstdlib>
 #include <ctime>
 using namespace std;
-//#define rang 18;
 
 void pack(int* a, int n, int* count) {
     // заполнение массива нулями, чтобы не использовались мусорные значения
@@ -26,15 +25,14 @@ void pack(int* a, int n, int* count) {
     }
     cout << endl << endl;
 
-
     // подсчитываем количество повторений каждого числа в массиве счетчике
-    cout << "подсчитываем количество повторений каждого числа в массиве счетчике count[18]:\n";
     for (int i = 0; i < n; i++) 
     {
         count[a[i]]++;
     }
 
     // вывод для проверки коректности подсчета в массиве счетчике
+    cout << "подсчитываем количество повторений каждого числа в массиве счетчике count[18]:\n";
     for (int i = 0; i < 18; i++) {
         cout << count[i] << " ";
     }
@@ -47,14 +45,6 @@ void pack(int* a, int n, int* count) {
         cout << a[i] << " ";
     }
     cout << endl << endl;
-
-    //delete[] a;
-    // выводим элементов массива А для проверки
-    //cout << "массив А после «упаковки»:\n";
-    //for (int i = 0; i < n; i++){
-    //    cout << a[i] << " ";
-    //}
-    //cout << endl << endl;
 }
 
 void unpack(int* a, const int* key, const int* count, int n) {
