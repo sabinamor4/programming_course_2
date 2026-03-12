@@ -49,7 +49,7 @@ void pack(int* a, int n, int* count) {
 
 void unpack(int* a, const int* key, const int* count, int n) {
     int num = 0;
-    for (int i = 0; i < 18; i++) {
+    for (int i = 0; key[i] < 18; i++) {
         for (int j = 0; j < count[i]; j++,num++) 
             a[num] = key[i];
     }
