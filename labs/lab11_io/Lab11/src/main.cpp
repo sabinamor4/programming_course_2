@@ -12,48 +12,72 @@
 // 
 //   Операторы и функции:
 //+ cin, cout;
-//+ scanf(), printf();
-//+ gets(), puts();
-//fopen(), fclose();
-//fscanf(), fprintf()
+//+ scanf(), printf() - форматированный консольный ввод/вывод. 
+// могут вводить/выводить данные в различных форматах и управлять ими
+//+ gets(), puts(); - консольные ввод/вывод. только строки, нельзя преобразовать формат.
+// занимает меньше места и работает быстрее (scanf(), printf())
+// нет способа указать, где находится граница массива
+// (fgets() позволяет указать максимальную длину-сохраняет символ новой строки)
+//+ fopen(), fclose();
+//+ fscanf(), fprintf() - буферизированный ввод/вывод. 
+// как scanf(), printf() только работает с дисковыми файлами, а не консолью
 //read(), write()
-//feof();
+//+ feof();
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <cstdio>
 using namespace std;
 int main() {
     string name;
 
-    int a;
-    cout << "Input A integer number: ";
-    cin >> a;
-    cout << "We scored in your number A: "<< a<<endl;
+    //int a;
+    //cout << "Input A integer number: ";
+    //cin >> a;
+    //cout << "We scored in your number A: "<< a<<endl;
 
-    int b;
-    cout << "Please input your authentication password: ";
-    scanf_s("%d", &b);
-    printf_s("\nWe don't have a dataset...\nSorry, we will cheak it in future and save your new password: %d\n", b);
-    char ch;
-    ch = getc(stdin);
-    cout << ch;
-    puts("hello");
+    //int b;
+    //cout << "Please input your authentication password: ";
+    //scanf_s("%d", &b);
+    //printf_s("\nWe don't have a dataset...\nSorry, we will cheak it in future and save your new password: %d\n", b);
+    //char ch[5]={'e','r','y','j','f'};
+    //gets(ch);
+    //cout << ch;
+    //puts("hello");
 
-    //FILE* fin, * fout;
-    //int e;
-    //if ((fout = fopen(filename, "w")) != NULL) {
-    //    for (int i = 0; i < 6; i++) {
-    //        if ((e = fprintf(fout, "%d\n", i)) > 0)
-    //            printf("%d", i+1);
+    //create object of class with name "fout" 
+    // and merge/conjuction with name in "";
+    //ofstream fout("first.txt", ios::trunc);
+    //fout << "We are plenty\nAnd can do all in the world if believe in it";
+    //fout.close();
 
-    //fscanf();
+    //ifstream fin("first.txt");
+    //if (!fin.is_open()) cout << "File cannot open\n";
+    //else {
+    //    char c;
+    //    while (fin.get(c)) cout << c;
+    //}
+
+
+    FILE *fp;
+    int c,e;
+    if ((fp = fopen("first", "w")) != NULL) {
+        for (int i = 0; i < 6; i++) {
+            e = fscanf(fp, "%d\n", i);
+        }
+    }
+
+    while (!feof(fp)) {
+        fprintf(fp, "%d", c);
+    }
+    fclose(fp);
+
     //read();
     //write();
-    //feof();
 
-    //fclose(filename);
 }
+
 
 //II.2.	КОРНЕВЫЕ СЛОВА
 // 
