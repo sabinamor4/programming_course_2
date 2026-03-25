@@ -1,4 +1,5 @@
 #include <iostream>
+using namespace std;
 
 // Lab 12
 // TODO: реализуйте решение по заданию в labs/lab12_combinatorics/README.md
@@ -15,48 +16,52 @@
 //123
 //132
 //213
-//procedure per(k:integer);
-//var i : integer;
-//begin
-//for i: = 1 to n do
-//if R[i] = 0 then begin
-//P[k] : = i; R[i]: = 1;
-//if k = n then ВЫВОД
-//else per(k + 1);
-//R[i]: = 0
-//end
-//end;
-//for i: = 1 to n do R[i] : = 0;
-//per(1);
 
 
-2
-генерация перестановок ферзей
-int n, P[21], H[21], R[41], L[41];/*глобальные описания */
-void queen(int k)      /*функция генерации перестановок */
+//2
+//генерация перестановок ферзей
+2 способа:
+
+1) в лоб с использованием матрицы
+
+
+2)
+int n, P[21], H[21], R[41], L[41], cous=0;/*глобальные описания*/
+/*P = Position (перестановка, выводимая на экран)
+H=Horizontal (0/1 занят ли горизонт на этой строке)
+R=Right Diagonal (занята ли диагональ на диагонали идущая в правый верхний угол)
+L=Left Diagonal (занята ли диагональ на диагонали идущая в левый верхний угол)
+*/
+void queen(int k)      
 {
     int i, j;
     for (i = 1; i <= n; i++)
+    {
         if (H[i] == 0 && R[i - k + 21] == 0 && L[i + k] == 0)
         {
             P[k] = i; H[i] = 1; R[i - k + 21] = 1; L[i + k] = 1;
-            if (k == n)        /*вывод сгенерированной перестановки*/
+            if (k == n)      
             {
-                for (j = 1; j <= n; j++)printf("%2d ", P[j]);
+                for (j = 1; j <= n; j++) printf("%2d ", P[j]);
                 printf("\n");
+                cous += 1;
             }
             else queen(k + 1);
             H[i] = 0; R[i - k + 21] = 0; L[i + k] = 0;
         }
+    }
+
 }
+
 int main() {
     // TODO
     int i;
-    scanf("%d", &n);
+    scanf_s("%d", &n);
     for (i = 1; i <= n; i++) H[i] = 0;
     for (i = 2; i <= n + n; i++)
     {
         R[i] = 0; L[i] = 0;
     }
     queen(1);
+    cout << (cous);
 }
