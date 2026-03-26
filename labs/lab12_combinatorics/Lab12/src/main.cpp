@@ -16,6 +16,41 @@ using namespace std;
 //123
 //132
 //213
+//в массиве Р[n] содержатся элементы н-р 1 2 3, 1 3 2, 2 1 3...
+//массив R[n] вспомогательный со значениями 0/1
+//
+//#include <iostream>
+//using namespace std;
+//
+//void per(int k, int n, int *P, int *R) 
+//{
+    //	for (int i = 1; i < n; i++) 
+    //  {
+    //		if (R[i] == 0) 
+    //      {
+    //			P[k] = i; R[i] = 1;
+    //			if (k == n) return;
+    //			else per(k + 1, n, P, R);
+    //			R[i] = 0;
+    //		}
+    //	}
+    //	return;
+//}
+//
+//
+//int main() {
+//	int n = 3, *R= new int [n+1], *P = new int[n+1];
+//	for (int i = 1; i <= n; i++)	
+// {
+//		R[i] = 0;
+//		P[i] = 0;
+//	}
+//
+//	per(1,n,P,R);
+//	delete[] P;
+//	delete[] R;
+//	return 0;
+//}
 
 
 //2
@@ -23,7 +58,7 @@ using namespace std;
 //2 способа:
 //
 //1) в лоб с использованием матрицы
-int n, P[21][21], cous = 0;/*глобальные описания*/
+int n, P[21][21], cous;/*глобальные описания*/
 //P = Position (перестановка, выводимая на экран)
 
 void queen(int k)
