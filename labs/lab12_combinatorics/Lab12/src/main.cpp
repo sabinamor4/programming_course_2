@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdio>
 using namespace std;
 
 // Lab 12
@@ -58,38 +59,58 @@ using namespace std;
 //2 способа:
 //
 //1) в лоб с использованием матрицы
-int n, P[21][21], cous;/*глобальные описания*/
+int n, cous=0;
+int P[21][21] = { 0 };
+bool flag;/*глобальные описания*/
 //P = Position (перестановка, выводимая на экран)
 
 void queen(int k)
 {
     int i, j;
+    if (k > n)
+    {
+        for (i = 1; i <= n; i++)
+        {
+            for (j = 1; j <= n; j++) printf("%2d ", P[i][j]);
+            printf("\n");
+        }
+        printf("\n");
+        cous ++;
+    }
+    
     for (i = 1; i <= n; i++)
     {
-         if (P[i-1][k] == 0 && P[i+ 1][k- 1] == 0 && P[i - 1][k - 1] == 0)
-         {
-             P[i][k] = 1;
-             if (k == n)
-             {
-                for (i = 1; i <= n; i++)
-                {
-                    for (j = 1; j <= n; j++) printf("%2d ", P[i][j]);
-                    printf("\n");
-                }
-                cous += 1;
-             }
-             else queen(k + 1);
-         }
+        flag=true;
+        for (j = 1; j < k; j++)
+        {
+            if (P[i][j] == 1 || (P[i + (k - j)][j] == 1 && (i + (k - j) <= n)))
+            {
+                flag = false;
+                break;
+            }
+
+            if (P[i - (k - j)][j] == 1 && (i - (k - j) >= 1))
+            {
+                flag = false;
+                break;
+            }
+        }
+
+        if (flag)
+        {
+            P[i][k] = 1;
+            queen(k + 1);
+            P[i][k] = 0;
+        }
     }
 }
 
+
 int main() 
 {
-    // TODO
-    int i;
     scanf_s("%d", &n);
     queen(1);
-    cout << (cous);
+    cout << "Количество решений: " << cous << endl;
 }
 
 
