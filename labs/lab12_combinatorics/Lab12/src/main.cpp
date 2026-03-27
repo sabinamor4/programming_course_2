@@ -60,11 +60,11 @@ using namespace std;
 //
 //1) в лоб с использованием матрицы
 int n, cous=0;
-int P[21][21] = { 0 };
+int P[21][21] = {};
 bool flag;/*глобальные описания*/
 //P = Position (перестановка, выводимая на экран)
 
-void queen(int k)
+void queenArr(int k)
 {
     int i, j;
     if (k > n)
@@ -99,60 +99,54 @@ void queen(int k)
         if (flag)
         {
             P[i][k] = 1;
-            queen(k + 1);
+            queenArr(k + 1);
             P[i][k] = 0;
         }
     }
 }
 
 
-int main() 
-{
-    scanf_s("%d", &n);
-    queen(1);
-    cout << "Количество решений: " << cous << endl;
-}
-
-
-
 
 //2)
-//int n, P[21], H[21], R[41], L[41], cous=0;/*глобальные описания*/
-///*P = Position (перестановка, выводимая на экран)
-//H=Horizontal (0/1 занят ли горизонт на этой строке)
-//R=Right Diagonal (занята ли диагональ на диагонали идущая в правый верхний угол)
-//L=Left Diagonal (занята ли диагональ на диагонали идущая в левый верхний угол)
-//*/
-//void queen(int k)      
-//{
-//    int i, j;
-//    for (i = 1; i <= n; i++)
-//    {
-//        if (H[i] == 0 && R[i - k + 21] == 0 && L[i + k] == 0)
-//        {
-//            P[k] = i; H[i] = 1; R[i - k + 21] = 1; L[i + k] = 1;
-//            if (k == n)      
-//            {
-//                for (j = 1; j <= n; j++) printf("%2d ", P[j]);
-//                printf("\n");
-//                cous += 1;
-//            }
-//            else queen(k + 1);
-//            H[i] = 0; R[i - k + 21] = 0; L[i + k] = 0;
-//        }
-//    }
-//
-//}
-//
-//int main() {
-//    // TODO
-//    int i;
-//    scanf_s("%d", &n);
-//    for (i = 1; i <= n; i++) H[i] = 0;
-//    for (i = 2; i <= n + n; i++)
-//    {
-//        R[i] = 0; L[i] = 0;
-//    }
-//    queen(1);
-//    cout << (cous);
-//}
+int Pos[21], H[21], R[41], L[41];/*глобальные описания*/
+/*P = Position (перестановка, выводимая на экран)
+H=Horizontal (0/1 занят ли горизонт на этой строке)
+R=Right Diagonal (занята ли диагональ на диагонали идущая в правый верхний угол)
+L=Left Diagonal (занята ли диагональ на диагонали идущая в левый верхний угол)
+*/
+void queen(int k)      
+{
+    int i, j;
+    for (i = 1; i <= n; i++)
+    {
+        if (H[i] == 0 && R[i - k + 21] == 0 && L[i + k] == 0)
+        {
+            Pos[k] = i; H[i] = 1; R[i - k + 21] = 1; L[i + k] = 1;
+            if (k == n)      
+            {
+                for (j = 1; j <= n; j++) printf("%2d ", Pos[j]);
+                printf("\n");
+                cous ++;
+            }
+            else queen(k + 1);
+            H[i] = 0; R[i - k + 21] = 0; L[i + k] = 0;
+        }
+    }
+
+}
+
+int main()
+{
+    int i;
+    scanf_s("%d", &n);
+    for (i = 1; i <= n; i++) H[i] = 0;
+    for (i = 2; i <= n + n; i++)
+    {
+        R[i] = 0; L[i] = 0;
+    }
+    queen(1);
+    cout << cous<< endl;
+
+    queenArr(1);
+    cout << "Количество решений: " << cous << endl;
+}
