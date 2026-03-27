@@ -59,7 +59,7 @@ using namespace std;
 //2 способа:
 //
 //1) в лоб с использованием матрицы
-int n, cous=0;
+int n, cous1 = 0, cous2 = 0;
 int P[21][21] = {};
 bool flag;/*глобальные описания*/
 //P = Position (перестановка, выводимая на экран)
@@ -75,7 +75,7 @@ void queenArr(int k)
             printf("\n");
         }
         printf("\n");
-        cous ++;
+        cous2 ++;
     }
     
     for (i = 1; i <= n; i++)
@@ -126,7 +126,7 @@ void queen(int k)
             {
                 for (j = 1; j <= n; j++) printf("%2d ", Pos[j]);
                 printf("\n");
-                cous ++;
+                cous1 ++;
             }
             else queen(k + 1);
             H[i] = 0; R[i - k + 21] = 0; L[i + k] = 0;
@@ -144,8 +144,8 @@ int main()
         R[i] = 0; L[i] = 0;
     }
     queen(1);
-    cout << cous<< endl;
+    cout << cous1<< endl;
 
     queenArr(1);
-    cout << "Количество решений: " << cous << endl;
+    cout << "Количество решений: " << cous2 << endl;
 }
