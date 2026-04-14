@@ -1,7 +1,8 @@
-//#include <iostream>
-//#include <cmath>
-//#include <cstdio>
-//using namespace std;
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <cstdio>
+using namespace std;
 //
 //// Lab 13
 //// TODO: реализуйте решение по заданию в labs/lab13_linear_algebra/README.md
@@ -11,85 +12,105 @@
 //// - числа через пробел
 //// - если несколько строк — в фиксированном порядке
 ////asadasdasd
-//double eps = 0.000001;
-//int SystemOfLinearEquations(int M, int n, double** A, double*X) {
-//    int i,j,v,k;
-//    double z=0,c;
-//    for (i = 0; i < M - 1; ++i) {
-//        v = i;
-//        for (j = i + 1; j < M; ++j)
-//            if (abs(A[j][i]) > abs(A[v][i])) v = j;
-//        if (abs(A[v][i]) < eps) return 0;
-//        else {
-//            if (v!=i)
-//                for (j = i; j <= n; ++j)
-//                    z = A[i][j]; A[i][j] = A[v][j]; A[v][j] = z;
-//            for (k = i + 1; k < M; ++k) {
-//                c = A[k][i] / A[i][i];
-//                for (j = i; j <= n; ++j) 
-//                    A[k][j] -= c * A[i][j];
-//            }
-//        }
-//    }
-//
-//    cout << endl;
-//    for (i = 0; i < M; ++i) {
-//        for (j = 0; j < n+1; ++j) {
-//            cout << A[i][j] << ' ';
-//        }
-//        cout << endl;
-//    }
-//
-//   
-//    //i используется для вычитания из строки k
-//    for (i = n - 1; i >= 1; --i) {
-//        //у Костюка не правильно т.к k < i - 1 пропускает решение одной строки  k - (i - 1)
-//        for (k = 0; k <= i-1; ++k) {
-//            if (abs(A[i][i]) < eps) return 0;
-//            c = A[k][i] / A[i][i];
-//            A[k][n] -= c * A[i][n];
-//            A[k][i] = 0;
-//            }
-//        }
-//    
-//
-//
-//    cout << endl;
-//    for (i = 0; i <M; ++i) {
-//        for (j = 0; j < n+1; ++j) {
-//            cout << A[i][j] << ' ';
-//        }
-//        cout << endl;
-//    }
-//    cout << endl;
-//
-//    for (i = 0; i < n; ++i) {
-//        X[i] = A[i][n] / A[i][i];
-//    }
-//    return 1;
-//}
-//
-//int main() {
-//    int i, j, g, n, M;
-//    double** A, * X;
-//    cin>>M;
-//    cin>>n;
-//    X = new double[n];
-//    A = new double*[M];
-//    for (i = 0; i < M; ++i) {
-//        A[i] = new double[n + 1];
-//        for (j = 0; j <= n; ++j) scanf_s("%lf", &A[i][j]);
-//    }
-//    g=SystemOfLinearEquations(M,n,A,X);
-//    if (g) {
-//        for (i = 0; i < n; ++i) printf("%8.3lf", X[i]);
-//        printf("\n");
-//    }
-//    else printf("Inconsistent system\n");
-//
-//    delete[] A;
-//    delete[] X;
-//}
+double eps = 0.000001;
+int SystemOfLinearEquations(int M, int n, double** A, double*X) {
+    int i,j,v,k;
+    double z=0,c;
+    for (i = 0; i < M - 1; ++i) {
+        v = i;
+        for (j = i + 1; j < M; ++j)
+            if (abs(A[j][i]) > abs(A[v][i])) v = j;
+        if (abs(A[v][i]) < eps) return 0;
+        else {
+            if (v!=i)
+                for (j = i; j <= n; ++j) {
+                    z = A[i][j]; A[i][j] = A[v][j]; A[v][j] = z;
+                }
+            for (k = i + 1; k < M; ++k) {
+                c = A[k][i] / A[i][i];
+                for (j = i; j <= n; ++j) 
+                    A[k][j] -= c * A[i][j];
+            }
+        }
+    }
+
+    cout << endl;
+    for (i = 0; i < M; ++i) {
+        for (j = 0; j < n+1; ++j) {
+            cout << A[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+   
+    //i используется для вычитания из строки k
+    for (i = n - 1; i >= 1; --i) {
+        //у Костюка не правильно т.к k < i - 1 пропускает решение одной строки  k - (i - 1)
+        for (k = 0; k <= i-1; ++k) {
+            if (abs(A[i][i]) < eps) return 0;
+            c = A[k][i] / A[i][i];
+            A[k][n] -= c * A[i][n];
+            A[k][i] = 0;
+        }
+    
+        
+        cout << endl;
+        for (int b = 0; b < M; ++b) {
+            for (int j = 0; j < n + 1; ++j) {
+                cout << A[b][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+    
+
+
+    //cout << endl;
+    //for (i = 0; i <M; ++i) {
+    //    for (j = 0; j < n+1; ++j) {
+    //        cout << A[i][j] << ' ';
+    //    }
+    //    cout << endl;
+    //}
+    //cout << endl;
+
+    for (i = 0; i < n; ++i) {
+        X[i] = A[i][n] / A[i][i];
+    }
+    return 1;
+}
+
+int main() {
+    int i, j, g, n, M;
+    double** A, * X;
+    cin>>M;
+    cin>>n;
+    X = new double[n];
+    A = new double*[M];
+    for (i = 0; i < M; ++i) {
+        A[i] = new double[n + 1];
+        for (j = 0; j <= n; ++j) scanf_s("%lf", &A[i][j]);
+    }
+    g=SystemOfLinearEquations(M,n,A,X);
+    printf("\n");
+    if (g) {
+        for (i = 0; i < n; ++i) printf("%8.3lf", X[i]);
+        printf("\n");
+    }
+    else printf("Inconsistent system\n");
+
+    //cout << endl;
+    //for (i = 0; i < M; ++i) {
+    //    for (j = 0; j < n + 1; ++j) {
+    //        cout << A[i][j] << ' ';
+    //    }
+    //    cout << endl;
+    //}
+    //cout << endl;
+
+    delete[] A;
+    delete[] X;
+}
 
 
 
@@ -203,7 +224,6 @@
 //    }
 //
 //    g = SystemOfLinearEquations(M, n, A, X);
-//
 //    if (g) {
 //        for (i = 0; i < n; ++i) {
 //            printf("%8.4f ", X[i]);
@@ -225,10 +245,11 @@
 
 
 //Общее решение
+//bool flag; int r;
 //double eps = 0.000001;
 //int SystemOfLinearEquations(int m, int n, double** A, double* X) {
-//    int i, j, v, k, r, *L,u,p;
-//    L = new int* [n];
+//    int i, j, v, k, L[100], u, p;
+//    //L = new int* [n];
 //    double z, c;
 //    for (i = 0; i < n; i++) L[i] = i;
 //    i = 0;
@@ -263,7 +284,9 @@
 //    }
 //    i = r;
 //    while (i < m && abs(A[i][n]) < eps) i++;
-//    if (i < m) return 0;
+//    //решение системы не существует
+//    if (i < m);// return 0;
+//    //единственное решение
 //    else if (r == n) {
 //        for (j = 0; j < n; j++) X[L[j]] = A[j][n];
 //    }
@@ -292,104 +315,124 @@
 //    if (g) {
 //        for (i = 0; i < n; ++i) printf("%8.3lf", X[i]);
 //        printf("\n");
+//        if (flag == false) {
+//            for (i=0; i<r-1; i++)
+//                printf("%8.3lf", X[i]);
+//            for (i=r; i<n-1; i++)
+//                printf("x", i, ', ');
+//            printf("is free");
+//        }
+//
 //    }
 //    else printf("Inconsistent system\n");
+//}
 // 
 // 
 // 
-// 
-//1 working with file:
-#include <iostream>
-#include <fstream>
-#include <iomanip>
-#include <cmath>
-#include <algorithm>
-using namespace std;
-
-void gaussianJordan(double** matrix, int rows, int cols) {
-    int pivot_row = 0;
-    for (int j = 0; j < cols - 1 && pivot_row < rows; ++j) {
-        int max_row = pivot_row;
-        for (int i = pivot_row + 1; i < rows; ++i) {
-            if (abs(matrix[i][j]) > abs(matrix[max_row][j])) {
-                max_row = i;
-            }
-        }
-
-        if (matrix[max_row][j] == 0) {
-            continue;
-        }
-
-        if (pivot_row != max_row) {
-            swap(matrix[pivot_row], matrix[max_row]);
-        }
-
-        double pivot_element = matrix[pivot_row][j];
-        for (int k = j; k < cols; ++k) {
-            matrix[pivot_row][k] /= pivot_element;
-        }
-
-        for (int i = 0; i < rows; ++i) {
-            if (i != pivot_row) {
-                double factor = matrix[i][j];
-                for (int k = j; k < cols; ++k) {
-                    matrix[i][k] -= factor * matrix[pivot_row][k];
-                }
-            }
-        }
-
-        pivot_row++;
-    }
-}
-
-int main() {
-
-    ifstream infile("input.txt");
-    ofstream outfile("output.txt");
-
-    if (!infile.is_open()) {
-        cerr << "Ошибка открытия входного файла input.txt" << endl;
-        return 1;
-    }
-
-    if (!outfile.is_open()) {
-        cerr << "Ошибка открытия выходного файла output.txt" << endl;
-        return 1;
-    }
-
-    int m, n;
-    infile >> m >> n;
-    double** matrix = new double* [m];
-
-    for (int i = 0; i < m; ++i) {
-        matrix[i] = new double[n + 1];
-    }
-
-    for (int i = 0; i < m; ++i) {
-        for (int j = 0; j <= n; ++j) {
-            infile >> matrix[i][j];
-        }
-    }
-
-    gaussianJordan(matrix, m, n + 1);
-    outfile << "Матрица системы после приведения к ступенчатому виду (метод Гаусса-Жордана):\n\n";
-    outfile << fixed << setprecision(4);
-    for (int i = 0; i < m; ++i) {
-        for (int j = 0; j <= n; ++j) {
-            outfile << setw(10) << matrix[i][j] << " ";
-        }
-
-        outfile << "\n";
-    }
-
-    for (int i = 0; i < m; ++i) {
-        delete[] matrix[i];
-    }
-
-    delete[] matrix;
-    infile.close();
-    outfile.close();
-
-    cout << "Обработка завершена. Результат записан в output.txt" << endl;
-    return 0;
-}
+//// 
+////1 working with file:
+//#include <iostream>
+//#include <fstream>
+//#include <iomanip>
+//#include <cmath>
+//#include <algorithm>
+//using namespace std;
+//
+//void SystemOfLinearEquations(double** matrix, int rows, int cols) {
+//    int pivot_row = 0;
+//    for (int j = 0; j < cols - 1 && pivot_row < rows; ++j) {
+//        int max_row = pivot_row;
+//        for (int i = pivot_row + 1; i < rows; ++i) {
+//            if (abs(matrix[i][j]) > abs(matrix[max_row][j])) {
+//                max_row = i;
+//            }
+//        }
+//
+//        if (matrix[max_row][j] == 0) {
+//            continue;
+//        }
+//
+//        if (pivot_row != max_row) {
+//            swap(matrix[pivot_row], matrix[max_row]);
+//        }
+//
+//        double pivot_element = matrix[pivot_row][j];
+//        for (int k = j; k < cols; ++k) {
+//            matrix[pivot_row][k] /= pivot_element;
+//        }
+//
+//        for (int i = 0; i < rows; ++i) {
+//            if (i != pivot_row) {
+//                double factor = matrix[i][j];
+//                for (int k = j; k < cols; ++k) {
+//                    matrix[i][k] -= factor * matrix[pivot_row][k];
+//                }
+//            }
+//        }
+//
+//        pivot_row++;
+//    }
+//}
+//
+//int main() {
+//    int g,i;
+//
+//    ifstream infile("input.txt");
+//    ofstream outfile("output.txt");
+//
+//    if (!infile.is_open()) {
+//        outfile << "Ошибка открытия входного файла input.txt" << endl;
+//        return 1;
+//    }
+//
+//    if (!outfile.is_open()) {
+//        outfile << "Ошибка открытия выходного файла output.txt" << endl;
+//        return 1;
+//    }
+//
+//    int m, n;
+//    infile >> m >> n;
+//    double** matrix = new double* [m];
+//
+//    for (int i = 0; i < m; ++i) {
+//        matrix[i] = new double[n + 1];
+//    }
+//
+//    for (int i = 0; i < m; ++i) {
+//        for (int j = 0; j <= n; ++j) {
+//            infile >> matrix[i][j];
+//        }
+//    }
+//
+//    g=SystemOfLinearEquations(matrix, m, n + 1);
+//    outfile << "Матрица системы после приведения к ступенчатому виду (метод Гаусса-Жордана):\n\n";
+//    outfile << fixed << setprecision(4);
+//    for (int i = 0; i < m; ++i) {
+//        for (int j = 0; j <= n; ++j) {
+//            outfile << setw(10) << matrix[i][j] << " ";
+//        }
+//
+//        outfile << "\n";
+//    }
+//
+//    if (g) {
+//        for (i = 0; i < n; ++i) {
+//            outfile << X[i]<<' ';
+//        }
+//        outfile << "\n";
+//    }
+//    else {
+//        outfile << "Inconsistent system\n";
+//    }
+//
+//    for (int i = 0; i < m; ++i) {
+//        delete[] matrix[i];
+//    }
+//
+//    delete[] matrix;
+//    infile.close();
+//    outfile.close();
+//
+//    cout << "Обработка завершена. Результат записан в output.txt" << endl;
+//    return 0;
+//}
