@@ -157,7 +157,7 @@
 
 
 
-//Общее решение
+//Общее решение и две прямые на плоскости
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -253,43 +253,57 @@ int SystemOfLinearEquations(int m, int n, double** A, double* X) {
     return 1;
 }
 
-int main() {
-    int i, j, g, n, M;
-    double** A, * X;
-    cin >> M;
-    cin >> n;
-    X = new double[n];
-    A = new double* [M];
-    for (i = 0; i < M; ++i){
-        A[i] = new double[n + 1];
-        for (j = 0; j <= n; ++j) scanf_s("%lf", &A[i][j]);
-    }
-    printf("\n\n");
-    g = SystemOfLinearEquations(M, n, A, X);
-    if (g) {
-        //n
-        for (i = 0; i < n; ++i) printf("%8.3lf", X[i]);
-        printf("\n\n");
-    }
-    else printf("Inconsistent system\n");
-}
+//Общее решение
+//int main() {
+//    int i, j, g, n, M;
+//    double** A, * X;
+//    cin >> M;
+//    cin >> n;
+//    X = new double[n];
+//    A = new double* [M];
+//    for (i = 0; i < M; ++i){
+//        A[i] = new double[n + 1];
+//        for (j = 0; j <= n; ++j) scanf_s("%lf", &A[i][j]);
+//    }
+//    printf("\n\n");
+//    g = SystemOfLinearEquations(M, n, A, X);
+//    if (g) {
+//        //n
+//        for (i = 0; i < n; ++i) printf("%8.3lf", X[i]);
+//        printf("\n\n");
+//    }
+//    else printf("Inconsistent system\n");
+//}
 
 //На плоскости заданы две прямые, найти координаты точки пересечения прямых:
+#include <cctype>
+#include <string>
 int main() {
     int i, j, g, n, M;
     double** A, * X;
-    //cin >> M;
-    //cin >> n;
     n = 2; M = 2;
     X = new double[n];
     A = new double* [M];
+    for (i = 0; i < M; ++i)
+        A[i] = new double[n + 1];
+
+    string str, s = "";
+    cin.ignore();
+    getline(cin, str);
+    for (int i = 0; i < str.size(); ++i)
+        if (isdigit(str[1]) && (isalpha(str[i + 1]) || ispunct(str[i + 1])))
+            scanf_s("%lf", &A[i][n-i-1]);
+        else if (isupper(str[i]))
+            s += tolower(str[i]);
+
+        s += toupper(str[i]);
+    cout << s;
+
     for (i = 0; i < M; ++i) {
         A[i] = new double[n + 1];
         for (j = 0; j <= n; ++j) scanf_s("%lf", &A[i][j]);
     }
     printf("\n\n");
-    //g = SystemOfLinearEquations(M, n, A, X);
-    
     g = SystemOfLinearEquations(M, n, A, X);
     if (g) {
         //n
