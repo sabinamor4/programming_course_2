@@ -161,31 +161,38 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include <iomanip>
+//#include <iomanip>
 #include <cstdio>
 using namespace std;
-bool flag; int r;
+bool flag; int r, L[100];
 double eps = 0.000001;
 int SystemOfLinearEquations(int m, int n, double** A, double* X) {
-    int i, j, v, k, L[100], u, p;
+    int i, j, v, k, u, p;
     //L = new int* [n];
     double z, c;
     for (i = 0; i < n; i++) L[i] = i;
     i = 0;
-    if (n < m) r = n; else r = m;
+
+    if (n < m) r = n; 
+    else r = m;
+
     while (i<r){
         v = i; u = i;
-        for (j = i; j < m; ++j)
-            for (k = i; k < n; ++k)
+        for (j = i; j < m; ++j){
+            for (k = i; k < n; ++k){
                 if (abs(A[j][k]) > abs(A[v][u])) {
                     v = j; u = k;
                 }
+            }
+        }
+        // перестановку как двух строк и двух столбцов
         if (abs(A[v][u]) < eps) r = i;
         else {
-            if (v != i)
+            if (v != i) {
                 for (j = i; j <= n; ++j) {
                     z = A[i][j]; A[i][j] = A[v][j]; A[v][j] = z;
                 }
+            }
             if (u != i) {
                 for (k = 0; k < m; k++) {
                     z = A[k][i]; A[k][i] = A[k][u]; A[k][u] = z;
@@ -193,28 +200,54 @@ int SystemOfLinearEquations(int m, int n, double** A, double* X) {
                 p = L[i]; L[i] = L[u]; L[u] = p;
             }
             c = A[i][i];
-            for (j = i; j <= n + 1; j++) A[i][j] /= c;
+            for (j = i; j <= n + 1; j++) 
+            {
+                A[i][j] /= c;
+            }
             for (k = 0; k < m; k++)
+            {
                 if (k != i) {
                     c = A[k][i];
                     for (j = i; j <= n; j++) A[k][j] -= c * A[i][j];
                 }
+            }
             i++;
         }
     }
+
+
     i = r;
     while (i < m && abs(A[i][n]) < eps) i++;
     //решение системы не существует
     if (i < m) return 0;
-    //единственное решение
+    //единственное решение r == n
     else if (r == n) {
         for (j = 0; j < n; j++) X[L[j]] = A[j][n];
     }
+    // бесконечно много решений r < n
+    //L[j] ведущей в j - й строке.
     else{
+        
+        //for free
+        for (k = r; k < n; k++) {
+            printf(" x%d", L[k] + 1);
+            if (k < n - 2) printf(", ");
+        }
+        if (n-r>1) printf(" are free\n");
+        else printf(" is free\n");
+
+        for (k = r; k < n; k++) {
+            printf("x%d ", L[k] + 1);
+            cin >> X[L[k]];
+        }
+
+        //for notfree with input free
         for (j = 0; j < r; j++){
             X[L[j]] = A[j][n];
-            for (k = r; k < n; k++)
+            for (k = r; k < n; k++) {
+                //b-koef free*free
                 X[L[j]] -= A[j][k] * X[L[k]];
+            }
         }
     }
     return 1;
@@ -227,25 +260,41 @@ int main() {
     cin >> n;
     X = new double[n];
     A = new double* [M];
+    for (i = 0; i < M; ++i){
+        A[i] = new double[n + 1];
+        for (j = 0; j <= n; ++j) scanf_s("%lf", &A[i][j]);
+    }
+    printf("\n\n");
+    g = SystemOfLinearEquations(M, n, A, X);
+    if (g) {
+        //n
+        for (i = 0; i < n; ++i) printf("%8.3lf", X[i]);
+        printf("\n\n");
+    }
+    else printf("Inconsistent system\n");
+}
+
+//На плоскости заданы две прямые, найти координаты точки пересечения прямых:
+int main() {
+    int i, j, g, n, M;
+    double** A, * X;
+    //cin >> M;
+    //cin >> n;
+    n = 2; M = 2;
+    X = new double[n];
+    A = new double* [M];
     for (i = 0; i < M; ++i) {
         A[i] = new double[n + 1];
         for (j = 0; j <= n; ++j) scanf_s("%lf", &A[i][j]);
     }
+    printf("\n\n");
+    //g = SystemOfLinearEquations(M, n, A, X);
+    
     g = SystemOfLinearEquations(M, n, A, X);
     if (g) {
+        //n
         for (i = 0; i < n; ++i) printf("%8.3lf", X[i]);
-        printf("\n");
-        if (!flag) {
-            for (i=0; i<r-1; i++)
-                printf("%8.3lf", X[i]);
-            printf("\n");
-            for (i=r; i<n; i++)
-            {
-                printf("x%d", i);
-                if (i < n - 1) printf(", ");
-            }
-            printf(" is free\n");
-        }
+        printf("\n\n");
     }
     else printf("Inconsistent system\n");
 }
