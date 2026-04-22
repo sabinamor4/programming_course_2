@@ -14,6 +14,7 @@
 ////// - числа через пробел
 ////// - если несколько строк — в фиксированном порядке
 //////asadasdasd
+// 
 //double eps = 0.000001;
 //int SystemOfLinearEquations(int M, int n, double** A, double*X) {
 //    int i,j,v,k;
@@ -64,9 +65,7 @@
 //            cout << endl;
 //        }
 //    }
-//    
-//
-//
+// 
 //    //cout << endl;
 //    //for (i = 0; i <M; ++i) {
 //    //    for (j = 0; j < n+1; ++j) {
@@ -81,18 +80,17 @@
 //    }
 //    return 1;
 //}
+// 
 //
 //int main() {
 //    int i, j, g, n, M;
 //
 //    ifstream infile("input.txt");
-//    ofstream outfile("output.txt");
-//    
+//    ofstream outfile("output.txt");//    
 //    if (!infile.is_open()) {
 //        outfile << "Ошибка открытия входного файла input.txt" << endl;
 //        return 1;
-//    }
-//    
+//    }    
 //    if (!outfile.is_open()) {
 //        outfile << "Ошибка открытия выходного файла output.txt" << endl;
 //        return 1;
@@ -160,12 +158,12 @@
 //Общее решение и две прямые на плоскости
 #include <iostream>
 #include <fstream>
-#include <cmath>
-//#include <iomanip>
-#include <cstdio>
+#include <cstdlib>
 using namespace std;
+
 bool flag; int r, L[100];
 double eps = 0.000001;
+
 int SystemOfLinearEquations(int m, int n, double** A, double* X) {
     int i, j, v, k, u, p;
     //L = new int* [n];
@@ -254,17 +252,107 @@ int SystemOfLinearEquations(int m, int n, double** A, double* X) {
 }
 
 //Общее решение
+int main() {
+    int i, j, g, n, M;
+    double** A, * X;
+    cin >> M;
+    cin >> n;
+    X = new double[n];
+    A = new double* [M];
+    for (i = 0; i < M; ++i){
+        A[i] = new double[n + 1];
+        for (j = 0; j <= n; ++j) scanf_s("%lf", &A[i][j]);
+    }
+    printf("\n\n");
+    g = SystemOfLinearEquations(M, n, A, X);
+    if (g) {
+        //n
+        for (i = 0; i < n; ++i) printf("%8.3lf ", X[i]);
+        printf("\n\n");
+    }
+    else printf("Inconsistent system\n");
+
+    printf("Запуск скрипта Python для рисования...\n");
+    int draw = system("python PythonDraw2Lines.py");
+    if (draw != 0) cerr << "Ошибка при выполнении скрипта!" << endl;
+}
+
+
+//  Черновик попытки извлечения чисел из строки уравнения
+//#include <sstream>
+//#include <vector>
+//#include <cctype>
+//#include <string>
+//
+//using namespace std;
+//
+//// Функция для извлечения чисел из строки уравнения
+//void parseEquation(const string& s, vector<double>& coeffs) {
+//    coeffs.clear();
+//    string temp = "";
+//
+//    for (int i = 0; i < s.size(); ++i) {
+//        if (isdigit(s[i]) || s[i] == '-' || s[i] == '.') {
+//            temp += s[i];
+//        }
+//        else {
+//            if (!temp.empty()) {
+//                try {
+//                    coeffs.push_back(stod(temp));
+//                }
+//                catch (...) {}
+//                temp = "";
+//            }
+//        }
+//    }
+//    if (!temp.empty()) {
+//        try {
+//            coeffs.push_back(stod(temp));
+//        }
+//        catch (...) {}
+//    }
+//}
+//
+////На плоскости заданы две прямые, найти координаты точки пересечения прямых:
 //int main() {
 //    int i, j, g, n, M;
 //    double** A, * X;
-//    cin >> M;
-//    cin >> n;
+//    n = 2; M = 2;
 //    X = new double[n];
+//    
+//    
+//    
+//    //for (int i = 0; i < str.size(); ++i)
+//    //    if (isdigit(str[i]) && (isdigit(str[i+1])==1)) // (isalpha(str[i + 1]) || ispunct(str[i + 1])))
+//    //        A[i][n - (i + 1)]= str[i];
+//    //    else s += tolower(str[i]);
+//
+//    //    s += toupper(str[i]);
+//    //cout << s;
+//
+//    
+//
+//    string str;
+//    vector<double> coeff;
+//    cin.ignore();
+//    getline(cin, str);
+//
+//    parseEquation(str, coeff);
+//
 //    A = new double* [M];
-//    for (i = 0; i < M; ++i){
+//    i = 0;
+//    for (i = 0; i < n; ++i) {
 //        A[i] = new double[n + 1];
-//        for (j = 0; j <= n; ++j) scanf_s("%lf", &A[i][j]);
+//        printf("%8.3lf", coeff[i]);
+//        for (int j = 0; j <= n; ++j) {
+//            A[i][j] = coeff[i];
+//        }
 //    }
+//    for (i = 0; i < n; ++i){
+//        for (int j = 0; j <= n; ++j) printf("%8.3lf", A[i][j]);
+//    }
+//    printf("\n\n");
+//
 //    printf("\n\n");
 //    g = SystemOfLinearEquations(M, n, A, X);
 //    if (g) {
@@ -274,41 +362,3 @@ int SystemOfLinearEquations(int m, int n, double** A, double* X) {
 //    }
 //    else printf("Inconsistent system\n");
 //}
-
-//На плоскости заданы две прямые, найти координаты точки пересечения прямых:
-#include <cctype>
-#include <string>
-int main() {
-    int i, j, g, n, M;
-    double** A, * X;
-    n = 2; M = 2;
-    X = new double[n];
-    A = new double* [M];
-    for (i = 0; i < M; ++i)
-        A[i] = new double[n + 1];
-
-    string str, s = "";
-    cin.ignore();
-    getline(cin, str);
-    for (int i = 0; i < str.size(); ++i)
-        if (isdigit(str[1]) && (isalpha(str[i + 1]) || ispunct(str[i + 1])))
-            scanf_s("%lf", &A[i][n-i-1]);
-        else if (isupper(str[i]))
-            s += tolower(str[i]);
-
-        s += toupper(str[i]);
-    cout << s;
-
-    for (i = 0; i < M; ++i) {
-        A[i] = new double[n + 1];
-        for (j = 0; j <= n; ++j) scanf_s("%lf", &A[i][j]);
-    }
-    printf("\n\n");
-    g = SystemOfLinearEquations(M, n, A, X);
-    if (g) {
-        //n
-        for (i = 0; i < n; ++i) printf("%8.3lf", X[i]);
-        printf("\n\n");
-    }
-    else printf("Inconsistent system\n");
-}
