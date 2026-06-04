@@ -52,6 +52,7 @@
 //#include "../../../../../../../../../../Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.44.35207/include/__msvc_ostream.hpp"
 using namespace std;
 int main() {
+    system("chcp 65001 > nul");
     string name;
 
     int a;

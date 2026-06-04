@@ -136,6 +136,7 @@ void queen(int k)
 
 int main()
 {
+    system("chcp 65001 > nul");
     int i;
     scanf_s("%d", &n);
     for (i = 1; i <= n; i++) H[i] = 0;

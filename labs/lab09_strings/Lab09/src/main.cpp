@@ -17,6 +17,7 @@ int main() {
     //cout << "happy!!!";
     //char* s1 = new char[20];
     //cout << strcpy(s1, "smile!!!");
+    system("chcp 65001 > nul");
     char *s2,ch;
     s2 = new char[20];
     ch=getc(stdin);
