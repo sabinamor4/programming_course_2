@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
+#include <string>
 using namespace std;
 
 // Lab 14
@@ -11,25 +12,32 @@ using namespace std;
 // - числа через пробел
 // - если несколько строк — в фиксированном порядке
 // 
-int working_with_files(int &n) {
+int working_with_files(int n,ifstream &infile, ofstream &outfile) {
     system("chcp 65001 > nul");
-    ifstream infile("infile%d.txt", &n);
-    ofstream outfile("outfile%d.txt", &n);
+    string infilename = "infile" + to_string(n) + ".txt";
+    string outfilename = "outfile" + to_string(n) + ".txt";
+
+    infile.open(infilename);
+    outfile.open(outfilename);
+
     if (!infile.is_open()) {
         printf("Ошибка открытия выходного файла outfile%d.txt \n", &n);
-        outfile << "Ошибка открытия входного файла infile%d.txt", &n << endl;
+        outfile << "Ошибка открытия входного файла %s \n", infilename.c_str());
         return 1;
     }
     if (!outfile.is_open()) {
         printf("Ошибка открытия выходного файла outfile%d.txt \n", &n);
-        outfile << "Ошибка открытия выходного файла outfile%d.txt", &n << endl;
+        outfile << "Ошибка открытия выходного файла %s \n", outfilename.c_str());
         return 1;
     }
 }
 
 void adjacency_matrix() {
-    int** M, i=1, j, n, m, k;
-    working_with_files(i);
+    int** M, i, j, n, m, k;
+    ifstream infile;
+    ofstream outfile;
+
+    working_with_files(1,infile,outfile);
 
     infile >> n;
     M = new int* [n];
@@ -42,6 +50,7 @@ void adjacency_matrix() {
         infile >> i >> j;
         M[i - 1][j - 1] = 1; M[j - 1][i - 1] = 1;
     }
+
     printf("\n");
     printf("матрицa смежности: \n");
     outfile << "матрицa смежности: \n";
@@ -53,80 +62,163 @@ void adjacency_matrix() {
         printf("\n");
         outfile << "\n";
     }
+
+    for (i = 0; i < n; i++) delete[] M[i];
+    delete[] M;
+    infile.close();
+    outfile.close();
 }
 
 void adjacency_list() {
     int* v1, * v2, * D, * S, * L, * U;
-    int i, n, m;
+    int i, j,n, m,k;
+
+    ifstream infile;
+    ofstream outfile;
+
+    working_with_files(2, infile, outfile);
+
+    infile » n » m;
     scanf("%d%d", &n, &m);
+
     v1 = new int[m]; v2 = new int[m];
     for (i = 0; i < m; i++)
+        infile » v1[i] » v2[i];
         scanf("%d%d", &v1[i], &v2[i]);
     D = new int[m + m]; S = new int[n];
     L = new int[n]; U = new int[n];
-    for (j = 0; j < n; j++) L[j] = 0;//обнуление длин списков 
+
+    for (j = 0; j < n; j++) L[j] = 0;
     for (i = 0; i < m; i++)
-        //вычисление длин списков 
     {
         L[v1[i]]++; L[v2[i]]++;
     }
-    S[0] = 0; //вычисление начальных индексов на списки в массиве D 
+
+    S[0] = 0;
     for (j = 1; j < n; j++) S[j] = S[j - 1] + L[j - 1];
     for (j = 0; j < n; j++) U[j] = S[j];
-    //дублирование начальных индексов       
-    for (i = 0; i < m; i++)  //распределение смежных вершин 
-        //по спискам массива D 
-    {
-        k = v1[i]; D[U[k]] = v2[i]; U[k]++;
-        k = v2[i]; D[U[k]] = v1[i]; U[k]++;
+    for (i = 0; i < m; i++) {
+        k = v1[i]-1; D[U[k]] = v2[i]; U[k]++;
+        k = v2[i]-1; D[U[k]] = v1[i]; U[k]++;
     }
+    printf("\n");
+    printf("массив номеров смежных вершин: \n");
+    outfile « "массив номеров смежных вершин: \n";
+
+    for (i = 0; i < n; i++) {
+        printf("%d: ", i + 1);
+        outfile « i + 1 « ": ";
+        for (j = S[i]; j < S[i] + L[i]; j++) {
+            printf("%d ", D[j]);
+            outfile « D[j] « " ";
+        }
+        printf("\n");
+        outfile « "\n";
+    }
+
+    delete[] v1;
+    delete[] v2;
+    delete[] D;
+    delete[] S;
+    delete[] L;
+    delete[] U;
+
+    infile.close();
+    outfile.close();
 
 }
 
 void edge_list() {
+    ifstream infile;
+    ofstream outfile;
+    int n, m, i, j, k, count;
+    int* D, * S, * L;
 
+    working_with_files(3, infile, outfile);
+
+    // Пропускаем заголовок "массив номеров смежных вершин:"
+    string header;
+    getline(infile, header);
+    getline(infile, header);
+
+    // Читаем количество вершин из первой строки с данными
+    infile » n;
+    // Пропускаем двоеточие
+    char colon;
+    infile » colon;
+
+    // Выделяем память
+    S = new int[n];
+    L = new int[n];
+    int* tempD = new int[n * n]; // временный массив для хранения смежных вершин
+
+    // Читаем списки смежности
+    for (i = 0; i < n; i++) {
+        S[i] = 0;
+        L[i] = 0;
+        int vertex;
+        infile » vertex; // номер вершины (должен быть i+1)
+        infile » colon;
+        nt val;
+        int
+
+
+            pos = 0;
+        int temp[100]; // временный массив для хранения смежных вершин одной вершины
+
+        while (infile.peek() != '\n' && infile.peek() != EOF) {
+            infile » val;
+            if (val > 0) {
+                temp[pos++] = val;
+                L[i]++;
+            }
+        }
+
+        // Сохраняем смежные вершины во временный массив D
+        for (j = 0; j < pos; j++) {
+            tempD[S[i] + j] = temp[j];
+        }
+        if (i < n - 1) S[i + 1] = S[i] + L[i];
+    }
+
+    // Формируем массив D
+    m = 0;
+    for (i = 0; i < n; i++) m += L[i];
+    m = m / 2; // так как каждое ребро учтено дважды
+
+    D = new int[m * 2];
+    int* D_ptr = D;
+
+    // Формируем список ребер (без дублирования)
+    printf("\n");
+    printf("последовательность ребер: \n");
+    outfile « "последовательность ребер: \n";
+    outfile « n « " " « m « "\n";
+
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < L[i]; j++) {
+            int neighbor = tempD[S[i] + j];
+            // Добавляем ребро только если i+1 < neighbor (избегаем дублирования)
+            if (i + 1 < neighbor) {
+                printf("%d %d\n", i + 1, neighbor);
+                outfile « i + 1 « " " « neighbor « "\n";
+                *D_ptr++ = i + 1;
+                *D_ptr++ = neighbor;
+            }
+        }
+    }
+
+    delete[] D;
+    delete[] S;
+    delete[] L;
+    delete[] tempD;
+
+    infile.close();
+    outfile.close();
 }
 
 int main() {
-    //system("chcp 65001 > nul");
-    //ifstream infile("infile.txt");
-    //ofstream outfile("outfile.txt");
-    //if (!infile.is_open()) {
-    //    outfile << "Ошибка открытия входного файла infile.txt" << endl;
-    //    return 1;
-    //}        
-    //if (!outfile.is_open()) {
-    //    outfile << "Ошибка открытия выходного файла outfile.txt" << endl;
-    //    return 1;
-    //}
-
     adjacency_matrix();
     adjacency_list();
     edge_list();
-
-
-    //int* v1, * v2, * D, * S, * L, * U;
-    //int i, n, m, k;
-    //scanf("%d%d", &n, &m);
-    //v1 = new int[m]; v2 = new int[m];
-    //for (i = 0; i < m; i++)
-    //    scanf("%d%d", &v1[i], &v2[i]);
-    //D = new int[m + m]; S = new int[n];
-    //L = new int[n]; U = new int[n];
-    //for (j = 0; j < n; j++) L[j] = 0;//обнуление длин списков 
-    //for (i = 0; i < m; i++)
-    //    //вычисление длин списков 
-    //{
-    //    L[v1[i]]++; L[v2[i]]++;
-    //}
-    //S[0] = 0; //вычисление начальных индексов на списки в массиве D 
-    //for (j = 1; j < n; j++) S[j] = S[j - 1] + L[j - 1];
-    //for (j = 0; j < n; j++) U[j] = S[j];
-    ////дублирование начальных индексов       
-    //for (i = 0; i < m; i++)  //распределение смежных вершин 
-    //    //по спискам массива D 
-    //{
-    //    k = v1[i]; D[U[k]] = v2[i]; U[k]++;
-    //    k = v2[i]; D[U[k]] = v1[i]; U[k]++;
-    //}
 }
