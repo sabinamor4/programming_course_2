@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
+#include <sstream>
 #include <string>
 using namespace std;
 
@@ -83,7 +84,7 @@ void adjacency_matrix() {
 
 void adjacency_list() {
     int* v1, * v2, * D, * S, * L, * U;
-    int i, j,n, m,k;
+    int i, j, n, m, k;
 
     ifstream infile;
     ofstream outfile;
@@ -111,17 +112,16 @@ void adjacency_list() {
         k = v1[i]-1; D[U[k]] = v2[i]; U[k]++;
         k = v2[i]-1; D[U[k]] = v1[i]; U[k]++;
     }
-    printf("\n массив номеров смежных вершин: \n");
-    outfile << n<< "\n массив номеров смежных вершин: \n";
+    printf("\nмассив номеров смежных вершин:\n");
+    outfile << n << "\n";
 
     for (i = 0; i < n; i++) {
-        printf("%d: ", i + 1);
-        outfile << i + 1 << ": ";
+        //printf("%d: ", i + 1);
         for (j = S[i]; j < S[i] + L[i]; j++) {
-            printf("%d ", D[j]);
-            outfile << D[j] << " ";
+            //printf("%d ", D[j]);
+            outfile << D[j] << ' ';
         }
-        printf("\n");
+        //printf("\n");
         outfile << "\n";
     }
 
@@ -146,76 +146,49 @@ void edge_list() {
     working_with_files(3, infile, outfile);
 
     infile >> n;
+    infile.ignore();
 
-    // Пропускаем заголовок "массив номеров смежных вершин:"
-    string header;
-    getline(infile, header);
-    getline(infile, header);
-
-    // Пропускаем двоеточие
-    char colon;
-    infile >> colon;
-
-    // Выделяем память
-    S = new int[n];
     L = new int[n];
-    int* tempD = new int[n * n]; // временный массив для хранения смежных вершин
+    int* tempD = new int[n * n];
+    int** neighbors = new int*[n];
 
-    // Читаем списки смежности
     for (i = 0; i < n; i++) {
-        S[i] = 0;
-        L[i] = 0;
-        int vertex;
-        infile >> vertex; // номер вершины (должен быть i+1)
-        infile >> colon;
+        string line;
+        getline(infile, line);
+        stringstream ss(line);
         int val;
         int pos = 0;
-        int temp[100]; // временный массив для хранения смежных вершин одной вершины
-
-        while (infile.peek() != '\n' && infile.peek() != EOF) {
-            infile >> val;
-            if (val > 0) {
-                temp[pos++] = val;
-                L[i]++;
-            }
+        int temp[100];
+        while (ss >> val) {
+            temp[pos++] = val;
         }
-
-        // Сохраняем смежные вершины во временный массив D
+        L[i] = pos;
+        neighbors[i] = new int[pos];
         for (j = 0; j < pos; j++) {
-            tempD[S[i] + j] = temp[j];
+            neighbors[i][j] = temp[j];
         }
-        if (i < n - 1) S[i + 1] = S[i] + L[i];
     }
 
-    // Формируем массив D
     m = 0;
     for (i = 0; i < n; i++) m += L[i];
-    m = m / 2; // так как каждое ребро учтено дважды
+    m = m / 2;
 
-    D = new int[m * 2];
-    int* D_ptr = D;
-
-    // Формируем список ребер (без дублирования)
-    printf("\n");
-    printf("последовательность ребер: \n");
+    printf("\последовательность ребер: \n");
     outfile << "последовательность ребер: \n";
     outfile << n << " " << m << "\n";
 
     for (i = 0; i < n; i++) {
         for (j = 0; j < L[i]; j++) {
-            int neighbor = tempD[S[i] + j];
-            // Добавляем ребро только если i+1 < neighbor (избегаем дублирования)
+            int neighbor = neighbors[i][j];
             if (i + 1 < neighbor) {
                 printf("%d %d\n", i + 1, neighbor);
                 outfile << i + 1 << " " << neighbor << "\n";
-                *D_ptr++ = i + 1;
-                *D_ptr++ = neighbor;
             }
         }
     }
 
-    delete[] D;
-    delete[] S;
+    for (i=0;i<n;i++) delete[] neighbors[i];
+    delete[] neighbors;
     delete[] L;
     delete[] tempD;
 
