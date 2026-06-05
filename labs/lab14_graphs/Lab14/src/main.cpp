@@ -12,7 +12,7 @@ using namespace std;
 // - без лишнего текста
 // - числа через пробел
 // - если несколько строк — в фиксированном порядке
-// 
+
 int working_with_files(int n,ifstream &infile, ofstream &outfile) {
     system("chcp 65001 > nul");
     string infilename, outfilename;
@@ -116,14 +116,15 @@ void adjacency_list() {
     outfile << n << "\n";
 
     for (i = 0; i < n; i++) {
-        //printf("%d: ", i + 1);
+        printf("%d: ", i + 1);
         for (j = S[i]; j < S[i] + L[i]; j++) {
-            //printf("%d ", D[j]);
+            printf("%d ", D[j]);
             outfile << D[j] << ' ';
         }
-        //printf("\n");
+        printf("\n");
         outfile << "\n";
     }
+    printf("\n");
 
     delete[] v1;
     delete[] v2;
