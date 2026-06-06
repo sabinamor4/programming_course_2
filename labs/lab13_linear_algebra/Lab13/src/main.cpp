@@ -44,11 +44,10 @@ int SystemOfLinearEquations(int M, int n, double** A, double*X) {
         }
         cout << endl;
     }
-
    
-    //i используется для вычитания из строки k
+    //i используется для вычитания из строки k строки i
     for (i = n - 1; i >= 1; --i) {
-        //у Костюка не правильно т.к k < i - 1 пропускает решение одной строки  k - (i - 1)
+        //k < i - 1 пропускает решение одной строки  k - (i - 1)
         for (k = 0; k <= i-1; ++k) {
             if (abs(A[i][i]) < eps) return 0;
             c = A[k][i] / A[i][i];
@@ -153,9 +152,6 @@ int main() {
 
 
 
-//
-//
-//
 ////Общее решение и две прямые на плоскости
 //#include <iostream>
 //#include <fstream>
